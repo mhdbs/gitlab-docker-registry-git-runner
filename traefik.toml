@@ -1,0 +1,31 @@
+# Show Docker events for now
+logLevel = "INFO"
+defaultEntryPoints = ["https", "http"]
+
+# Force HTTPS
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "YOUR_EMAIL"
+# Store certificates in /acme.json
+storage = "acme.json"
+acmeLogging = true
+onHostRule = true
+onDemand = false
+# Use HTTP challenge as my DNS provider does not support DNS challenge
+entryPoint = "https"
+  [acme.httpChallenge]
+  entryPoint = "http"
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+watch = true
+# Only expose services that are enabled explicitly
+exposedbydefault = false

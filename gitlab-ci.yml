@@ -1,0 +1,34 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+lint_test:
+  stage: test
+  script: npm run lint
+
+unit_test:
+  stage: test
+  script: npm test
+
+build_docs:
+  stage: deploy
+  script:
+  - echo token=$CI_JOB_TOKEN
+  - echo registry.gitlab.com/root/test1/test_image:$CI_COMMIT_REF_NAME
+
+
